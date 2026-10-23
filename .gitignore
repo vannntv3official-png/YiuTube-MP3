@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+
+# Production / Executable build artifacts
+dist/
+build/
+out/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# IDE and local tool caches
+.gemini/
+.idea/
+.vscode/
+
+# Local media tests
+*.mp3
+*.m4a
+*.wav
+*.flac
+*.opus
+*_thumbnail.jpg
+*_thumbnail.png
+*_thumbnail.webp

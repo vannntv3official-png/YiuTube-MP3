@@ -1,0 +1,54 @@
+{
+  "name": "yubtube-mp3",
+  "version": "1.0.0",
+  "description": "Modern Light Glassmorphism YouTube to MP3 Downloader",
+  "main": "src/main/main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win",
+    "build:portable": "electron-builder --win portable",
+    "build:nsis": "electron-builder --win nsis",
+    "build:dir": "electron-builder --win --dir"
+  },
+  "keywords": [
+    "youtube",
+    "mp3",
+    "downloader",
+    "electron",
+    "glassmorphism"
+  ],
+  "author": "YubTube",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^41.2.1",
+    "electron-builder": "^26.15.3"
+  },
+  "build": {
+    "appId": "com.yubtube.mp3",
+    "productName": "YubTube MP3",
+    "copyright": "Copyright © 2026",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "src/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "YubTube MP3"
+    },
+    "portable": {
+      "artifactName": "${productName}-Portable-${version}.${ext}"
+    }
+  }
+}

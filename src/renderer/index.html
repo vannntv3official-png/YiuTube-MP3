@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YubTube MP3 - Glass & Light Audio Downloader</title>
+  <link rel="stylesheet" href="styles/glass.css">
+</head>
+<body>
+
+  <!-- Ambient Light Mesh Background -->
+  <div class="ambient-mesh">
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+    <div class="ambient-orb orb-3"></div>
+    <div class="ambient-orb orb-4"></div>
+    <div class="cursor-glow" id="cursor-glow"></div>
+  </div>
+
+  <div class="app-container">
+
+    <!-- Custom Glass Title Bar -->
+    <header class="titlebar">
+      <div class="titlebar-brand">
+        <div class="brand-badge">
+          <div class="brand-eq">
+            <span></span><span></span><span></span><span></span>
+          </div>
+        </div>
+        <span>YubTube MP3</span>
+        <span class="brand-version">PRO</span>
+      </div>
+
+      <div class="titlebar-actions">
+        <button class="window-btn" id="btn-minimize" title="Minimize">
+          <svg width="12" height="12" viewBox="0 0 12 12"><line x1="2" y1="6" x2="10" y2="6" stroke="currentColor" stroke-width="1.5"/></svg>
+        </button>
+        <button class="window-btn" id="btn-maximize" title="Maximize">
+          <svg width="12" height="12" viewBox="0 0 12 12"><rect x="2" y="2" width="8" height="8" fill="none" stroke="currentColor" stroke-width="1.5" rx="1"/></svg>
+        </button>
+        <button class="window-btn close-btn" id="btn-close" title="Close">
+          <svg width="12" height="12" viewBox="0 0 12 12"><line x1="2" y1="2" x2="10" y2="10" stroke="currentColor" stroke-width="1.5"/><line x1="10" y1="2" x2="2" y2="10" stroke="currentColor" stroke-width="1.5"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="main-wrapper">
+
+      <!-- Glass Sidebar -->
+      <aside class="sidebar">
+        <button class="nav-item active" data-view="view-home">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+          <span>Home</span>
+        </button>
+
+        <button class="nav-item" data-view="view-downloader">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          <span>Downloader</span>
+        </button>
+
+        <button class="nav-item" data-view="view-queue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="8" y1="6" x2="21" y2="6"></line>
+            <line x1="8" y1="12" x2="21" y2="12"></line>
+            <line x1="8" y1="18" x2="21" y2="18"></line>
+            <line x1="3" y1="6" x2="3.01" y2="6"></line>
+            <line x1="3" y1="12" x2="3.01" y2="12"></line>
+            <line x1="3" y1="18" x2="3.01" y2="18"></line>
+          </svg>
+          <span>Queue</span>
+          <span class="nav-badge" id="queue-badge" style="display: none;">0</span>
+        </button>
+
+        <button class="nav-item" data-view="view-library">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+            <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+          </svg>
+          <span>Library</span>
+          <span class="nav-badge" id="library-badge" style="display: none;">0</span>
+        </button>
+
+        <button class="nav-item" data-view="view-settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+          <span>Settings</span>
+        </button>
+
+        <div class="sidebar-footer">
+          <div style="font-size: 11px; color: var(--text-subtle); text-align: center;">
+            yt-dlp & ffmpeg ready
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Scrollable Area -->
+      <main class="content-body">
+
+        <!-- VIEW 0: YOUTUBE HOME & DISCOVER -->
+        <section class="view-panel active" id="view-home">
+
+          <!-- Hero Spotlight Banner -->
+          <div class="home-hero-card">
+            <div class="home-hero-content">
+              <div class="home-hero-badge">
+                <span class="badge-dot"></span>
+                <span>YOUTUBE MUSIC EXPLORER</span>
+              </div>
+              <h1 class="home-hero-title">Discover Trending Tracks & Viral Hits</h1>
+              <p class="home-hero-desc">Explore the world's most popular songs, stream high-energy playlists, and download studio-quality 320 kbps MP3s in one click.</p>
+              
+              <!-- Quick Search Bar in Home with Live Suggestions -->
+              <div class="search-input-wrapper">
+                <div class="home-search-bar">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                  </svg>
+                  <input type="text" id="home-search-input" class="home-search-input" placeholder="Search any song, artist, album, or mix..." autocomplete="off" spellcheck="false" />
+                  <button class="btn-home-search" id="btn-home-search">Search</button>
+                </div>
+                <div class="suggestions-dropdown" id="home-suggestions-dropdown" style="display: none;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Featured Curated Playlists & Albums -->
+          <div class="home-section-header">
+            <div class="section-title-wrap">
+              <h3 class="section-title">✨ Featured Mixes & Playlists</h3>
+              <span class="section-badge">Batch Ready</span>
+            </div>
+            <span style="font-size: 12px; color: var(--text-muted);">1-click batch download</span>
+          </div>
+
+          <div class="featured-playlists-row">
+            <!-- Playlist 1: Global Top Hits -->
+            <div class="featured-playlist-card" data-playlist="https://www.youtube.com/playlist?list=PLMC9KNkIncKtPzgY-5rmhvj7fax8fdxoj">
+              <div class="featured-pl-thumb-wrap">
+                <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=400&q=80" alt="Pop Hits" class="featured-pl-thumb">
+                <div class="featured-pl-badge">TOP 50</div>
+              </div>
+              <div class="featured-pl-body">
+                <div class="featured-pl-title">Global Top Pop Hits</div>
+                <div class="featured-pl-sub">Timeless Billboard & Pop chart-toppers</div>
+                <button class="btn-open-playlist">Explore Playlist</button>
+              </div>
+            </div>
+
+            <!-- Playlist 2: Lofi Chill -->
+            <div class="featured-playlist-card" data-playlist="https://www.youtube.com/playlist?list=PLofht4PTcKYnaH8w5olJCI-wUVxuoMHqM">
+              <div class="featured-pl-thumb-wrap">
+                <img src="https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=400&q=80" alt="Lofi Study" class="featured-pl-thumb">
+                <div class="featured-pl-badge">LOFI CHILL</div>
+              </div>
+              <div class="featured-pl-body">
+                <div class="featured-pl-title">Lofi Beats & Deep Study</div>
+                <div class="featured-pl-sub">Mellow relaxing beats to unwind & focus</div>
+                <button class="btn-open-playlist">Explore Playlist</button>
+              </div>
+            </div>
+
+            <!-- Playlist 3: High Energy EDM -->
+            <div class="featured-playlist-card" data-playlist="https://www.youtube.com/playlist?list=PL4fGSIFgk5h0W4v5rI8c1C9_SgU6mQ6sW">
+              <div class="featured-pl-thumb-wrap">
+                <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=400&q=80" alt="EDM Party" class="featured-pl-thumb">
+                <div class="featured-pl-badge">ENERGY</div>
+              </div>
+              <div class="featured-pl-body">
+                <div class="featured-pl-title">Workout & High-Energy EDM</div>
+                <div class="featured-pl-sub">Fast electronic bass, gym & dance rhythms</div>
+                <button class="btn-open-playlist">Explore Playlist</button>
+              </div>
+            </div>
+
+            <!-- Playlist 4: Chill Acoustic -->
+            <div class="featured-playlist-card" data-playlist="https://www.youtube.com/playlist?list=PLDISKgcnTR4z4A8J33mEaWp3W4aYfL_qj">
+              <div class="featured-pl-thumb-wrap">
+                <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400&q=80" alt="Acoustic" class="featured-pl-thumb">
+                <div class="featured-pl-badge">ACOUSTIC</div>
+              </div>
+              <div class="featured-pl-body">
+                <div class="featured-pl-title">Chill Acoustic Sessions</div>
+                <div class="featured-pl-sub">Warm guitar covers and mellow vocals</div>
+                <button class="btn-open-playlist">Explore Playlist</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Category Filter Bar -->
+          <div class="home-filter-toolbar">
+            <div class="home-category-pills" id="home-category-pills">
+              <button class="pill-btn active" data-category="trending">🔥 Trending Today</button>
+              <button class="pill-btn" data-category="pop">🎵 Pop Hits</button>
+              <button class="pill-btn" data-category="lofi">🎧 Lofi & Chill</button>
+              <button class="pill-btn" data-category="electronic">⚡ EDM & Dance</button>
+              <button class="pill-btn" data-category="rock">🎸 Rock Hits</button>
+              <button class="pill-btn" data-category="hiphop">🎤 Hip-Hop & Rap</button>
+              <button class="pill-btn" data-category="acoustic">☕ Acoustic Relax</button>
+            </div>
+            <button class="btn-secondary" id="btn-refresh-home" title="Refresh Feed" style="padding: 7px 12px; gap: 6px;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="home-refresh-icon">
+                <polyline points="23 4 23 10 17 10"></polyline>
+                <polyline points="1 20 1 14 7 14"></polyline>
+                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+              </svg>
+              <span>Refresh</span>
+            </button>
+          </div>
+
+          <!-- Dynamic Home Feed Grid -->
+          <div class="home-feed-grid" id="home-feed-grid">
+            <!-- Dynamically populated -->
+          </div>
+
+        </section>
+
+        <!-- VIEW 1: DOWNLOADER -->
+        <section class="view-panel" id="view-downloader">
+
+          <!-- Hero Search & Settings Card -->
+          <div class="glass-card">
+            <div class="hero-input-group">
+              
+              <!-- Mode Selection Switcher -->
+              <div class="mode-switch-tabs">
+                <button class="mode-tab active" id="tab-mode-url" data-mode="url">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                  </svg>
+                  <span>Link / Playlist</span>
+                </button>
+                <button class="mode-tab" id="tab-mode-search" data-mode="search">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                  </svg>
+                  <span>Search YouTube</span>
+                </button>
+              </div>
+
+              <!-- URL / Search Input Bar with Live Suggestions -->
+              <div class="search-input-wrapper">
+                <div class="url-input-container">
+                  <div class="url-input-icon">
+                    <svg id="input-mode-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                    </svg>
+                  </div>
+                  <input type="text" id="url-input" class="url-input" placeholder="Paste YouTube Video or Playlist URL (e.g. https://youtu.be/...)" spellcheck="false" autocomplete="off" />
+                  <div class="input-actions">
+                    <button class="btn-icon-subtle" id="btn-clear-url" title="Clear input" style="display: none;">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                    <button class="btn-paste" id="btn-paste">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                      </svg>
+                      <span>Paste</span>
+                    </button>
+                    <button class="btn-fetch" id="btn-fetch">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                      </svg>
+                      <span>Analyze</span>
+                    </button>
+                  </div>
+                </div>
+                <div class="suggestions-dropdown" id="url-suggestions-dropdown" style="display: none;"></div>
+              </div>
+
+              <!-- Format & Quality Options Grid -->
+              <div class="options-grid">
+                
+                <!-- Format selector -->
+                <div class="option-box">
+                  <span class="option-label">Audio Format</span>
+                  <div class="pill-group" id="format-pills">
+                    <button class="pill-btn active" data-format="mp3">MP3</button>
+                    <button class="pill-btn" data-format="m4a">M4A (AAC)</button>
+                    <button class="pill-btn" data-format="flac">FLAC</button>
+                    <button class="pill-btn" data-format="wav">WAV</button>
+                    <button class="pill-btn" data-format="opus">OPUS</button>
+                  </div>
+                </div>
+
+                <!-- MP3 Bitrate selector -->
+                <div class="option-box" id="bitrate-box">
+                  <span class="option-label">Audio Bitrate</span>
+                  <div class="pill-group" id="bitrate-pills">
+                    <button class="pill-btn active" data-bitrate="320k">320 kbps (HQ)</button>
+                    <button class="pill-btn" data-bitrate="256k">256 kbps</button>
+                    <button class="pill-btn" data-bitrate="192k">192 kbps</button>
+                    <button class="pill-btn" data-bitrate="128k">128 kbps</button>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- Output folder destination -->
+              <div class="folder-picker-box">
+                <div style="display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--text-muted); flex-shrink: 0;">
+                    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                  </svg>
+                  <span class="folder-path-text" id="destination-path-display">Loading folder...</span>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                  <button class="btn-secondary" id="btn-browse-folder">Change Folder</button>
+                  <button class="btn-secondary" id="btn-open-folder" title="Open folder in File Explorer">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                      <polyline points="15 3 21 3 21 9"></polyline>
+                      <line x1="10" y1="14" x2="21" y2="3"></line>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Advanced Toggles -->
+              <div class="advanced-toggles">
+                <label class="toggle-item">
+                  <div class="switch">
+                    <input type="checkbox" id="toggle-embed-art" checked>
+                    <span class="slider"></span>
+                  </div>
+                  <span>Embed Album Artwork (Cover)</span>
+                </label>
+
+                <label class="toggle-item">
+                  <div class="switch">
+                    <input type="checkbox" id="toggle-embed-tags" checked>
+                    <span class="slider"></span>
+                  </div>
+                  <span>Embed ID3 Metadata (Title/Artist)</span>
+                </label>
+
+                <label class="toggle-item">
+                  <div class="switch">
+                    <input type="checkbox" id="toggle-trim">
+                    <span class="slider"></span>
+                  </div>
+                  <span>Trim / Cut Song</span>
+                </label>
+              </div>
+
+              <!-- Audio Trimming controls (toggled) -->
+              <div class="trim-panel" id="trim-controls">
+                <span style="font-size: 13px; font-weight: 500; color: var(--text-main);">Cut Section:</span>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <span style="font-size: 12px; color: var(--text-muted);">Start:</span>
+                  <input type="text" id="trim-start" class="trim-input" placeholder="00:00" value="00:00" maxlength="8">
+                </div>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <span style="font-size: 12px; color: var(--text-muted);">End:</span>
+                  <input type="text" id="trim-end" class="trim-input" placeholder="03:30" maxlength="8">
+                </div>
+                <span style="font-size: 11px; color: var(--text-subtle);">(Format: mm:ss or hh:mm:ss)</span>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- YouTube Search Results Section -->
+          <div id="search-section" style="display: none;">
+            <div class="section-header-row">
+              <div class="section-title-wrap">
+                <h3 class="section-title" id="search-results-title">Search Results</h3>
+                <span class="section-badge" id="search-count-badge">0 results</span>
+              </div>
+              <button class="btn-subtle-close" id="btn-close-search" title="Dismiss Search">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                <span>Dismiss</span>
+              </button>
+            </div>
+            <div class="search-grid" id="search-results-grid">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- YouTube Playlist Batch Downloader Section -->
+          <div id="playlist-section" style="display: none;">
+            <div class="playlist-card">
+              <div class="playlist-header">
+                <div class="playlist-thumb-wrapper">
+                  <img id="playlist-thumb" class="playlist-thumb" src="" alt="Playlist Artwork">
+                  <div class="playlist-badge">PLAYLIST</div>
+                </div>
+                <div class="playlist-meta">
+                  <h2 class="playlist-title" id="playlist-title">Playlist Title</h2>
+                  <div class="playlist-author" id="playlist-uploader">Channel / Curator</div>
+                  <div class="playlist-stats">
+                    <span id="playlist-count">0 tracks</span>
+                    <span>•</span>
+                    <span id="playlist-selected-count">0 selected</span>
+                    <span>•</span>
+                    <span style="font-weight: 600; color: #ff416c;" id="playlist-format-label">MP3 · 320 kbps</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Playlist Action Toolbar -->
+              <div class="playlist-toolbar">
+                <div class="playlist-selection-controls">
+                  <label class="custom-checkbox-label">
+                    <input type="checkbox" id="playlist-select-all" checked>
+                    <span class="checkmark"></span>
+                    <span style="font-size: 13px; font-weight: 500;">Select All Tracks</span>
+                  </label>
+                  <span class="selection-counter" id="selection-counter-badge">All selected</span>
+                </div>
+                <div class="playlist-actions-right">
+                  <button class="btn-download-primary" id="btn-download-playlist">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                      <polyline points="7 10 12 15 17 10"></polyline>
+                      <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    <span id="btn-download-playlist-text">Download Selected Tracks</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Scrollable Track List -->
+              <div class="playlist-track-list" id="playlist-track-list">
+                <!-- Dynamically populated track rows -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Video Preview Card (Rendered when video is analyzed) -->
+          <div id="preview-section" style="display: none;">
+            <div class="preview-card">
+              <div class="preview-thumb-box">
+                <img id="preview-thumb" class="preview-thumb-img" src="" alt="Thumbnail" />
+                <span class="duration-badge" id="preview-duration">0:00</span>
+              </div>
+              <div class="preview-details">
+                <div>
+                  <h2 class="preview-title" id="preview-title">Video Title</h2>
+                  <div class="preview-uploader">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    <span id="preview-uploader">Channel Name</span>
+                  </div>
+                  <div class="preview-meta-row">
+                    <span id="preview-views">0 views</span>
+                    <span>•</span>
+                    <span id="preview-date">Uploaded</span>
+                    <span>•</span>
+                    <span id="preview-selected-format" style="font-weight: 600; color: #ff416c;">MP3 · 320 kbps</span>
+                  </div>
+                </div>
+
+                <div class="preview-actions-bar">
+                  <button class="btn-download-primary" id="btn-start-download">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                      <polyline points="7 10 12 15 17 10"></polyline>
+                      <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    <span>Download MP3 Now</span>
+                  </button>
+                  <button class="btn-secondary" id="btn-preview-stream-modal" style="padding: 10px 16px;" title="Stream video & audio live in app">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    <span>Stream Live</span>
+                  </button>
+                  <button class="btn-secondary" id="btn-add-queue" style="padding: 10px 18px;">
+                    <span>Add to Queue</span>
+                  </button>
+                  <button class="btn-secondary" id="btn-download-thumb" style="padding: 10px 16px;" title="Download High-Resolution Video Thumbnail">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                      <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                      <polyline points="21 15 16 10 5 21"></polyline>
+                    </svg>
+                    <span>Download Thumbnail</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- VIEW 2: ACTIVE DOWNLOADS & QUEUE -->
+        <section class="view-panel" id="view-queue">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px;">
+            <h2 style="font-size: 18px; font-weight: 600;">Active Downloads & Queue</h2>
+            <button class="btn-secondary" id="btn-clear-queue">Clear Inactive</button>
+          </div>
+
+          <div class="downloads-list" id="queue-items-container">
+            <!-- Rendered dynamically -->
+            <div class="empty-state" id="queue-empty-state">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              <h3>No Active Downloads</h3>
+              <p>Paste a YouTube link in the Downloader tab and click Download to start extracting audio.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- VIEW 3: DOWNLOAD LIBRARY / HISTORY -->
+        <section class="view-panel" id="view-library">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px;">
+            <h2 style="font-size: 18px; font-weight: 600;">Downloaded Library</h2>
+            <div style="display: flex; gap: 10px;">
+              <input type="text" id="library-search" class="url-input" placeholder="Search tracks..." style="background: white; border: 1px solid var(--glass-border); padding: 6px 14px; border-radius: 8px; font-size: 12.5px; width: 200px;" />
+              <button class="btn-secondary" id="btn-clear-library">Clear All</button>
+            </div>
+          </div>
+
+          <div id="library-items-container">
+            <!-- Dynamically populated -->
+            <div class="empty-state" id="library-empty-state">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M9 18V5l12-2v13"></path>
+                <circle cx="6" cy="18" r="3"></circle>
+                <circle cx="18" cy="16" r="3"></circle>
+              </svg>
+              <h3>Your Library is Empty</h3>
+              <p>Completed MP3 downloads will appear here with an embedded audio player and quick folder access.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- VIEW 4: SETTINGS -->
+        <section class="view-panel" id="view-settings">
+          <div class="glass-card">
+            <h2 style="font-size: 18px; font-weight: 600; margin-bottom: 20px;">Application Preferences</h2>
+
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+              
+              <div>
+                <label style="font-size: 13.5px; font-weight: 600; display: block; margin-bottom: 6px;">Default Output Directory</label>
+                <div class="folder-picker-box">
+                  <span class="folder-path-text" id="settings-folder-path">...</span>
+                  <button class="btn-secondary" id="btn-settings-change-folder">Browse...</button>
+                </div>
+              </div>
+
+              <div>
+                <label style="font-size: 13.5px; font-weight: 600; display: block; margin-bottom: 6px;">Default MP3 Bitrate</label>
+                <div class="pill-group" id="settings-bitrate-pills">
+                  <button class="pill-btn active" data-val="320k">320 kbps (Extreme)</button>
+                  <button class="pill-btn" data-val="256k">256 kbps (High)</button>
+                  <button class="pill-btn" data-val="192k">192 kbps (Standard)</button>
+                  <button class="pill-btn" data-val="128k">128 kbps (Compact)</button>
+                </div>
+              </div>
+
+              <div style="display: flex; flex-direction: column; gap: 12px;">
+                <label class="toggle-item">
+                  <div class="switch">
+                    <input type="checkbox" id="settings-auto-paste" checked>
+                    <span class="slider"></span>
+                  </div>
+                  <span>Auto-detect YouTube URLs from Clipboard</span>
+                </label>
+
+                <label class="toggle-item">
+                  <div class="switch">
+                    <input type="checkbox" id="settings-notification" checked>
+                    <span class="slider"></span>
+                  </div>
+                  <span>Show notifications when downloads complete</span>
+                </label>
+              </div>
+
+              <div style="border-top: 1px solid var(--glass-border-subtle); padding-top: 16px;">
+                <h3 style="font-size: 14px; font-weight: 600; margin-bottom: 8px;">Backend Status</h3>
+                <div style="display: flex; flex-direction: column; gap: 6px; font-size: 12.5px; color: var(--text-muted);">
+                  <div>yt-dlp engine: <span style="color: var(--accent-green); font-weight: 600;">Active & Ready</span></div>
+                  <div>FFmpeg audio encoder: <span style="color: var(--accent-green); font-weight: 600;">Active & Ready (v7.1)</span></div>
+                  <div>MP3 LAME codec: <span style="color: var(--accent-green); font-weight: 600;">Enabled</span></div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+    </div>
+
+    <!-- Floating Mini Audio Player Dock -->
+    <div class="floating-player" id="floating-player">
+      <div class="player-info">
+        <div class="player-thumb-wrapper" id="player-thumb-wrapper">
+          <img id="player-thumb" class="player-thumb" src="" alt="Album Art">
+        </div>
+        <div style="min-width: 0; flex: 1;">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <div class="player-title" id="player-title">Track Title</div>
+            <div class="sound-wave" id="player-soundwave">
+              <span></span><span></span><span></span><span></span>
+            </div>
+          </div>
+          <div class="player-artist" id="player-artist">Artist</div>
+        </div>
+      </div>
+
+      <div class="player-controls">
+        <div class="player-buttons">
+          <button class="btn-icon-subtle" id="player-btn-prev" title="Rewind 10s">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="19" x2="5" y2="5"></line></svg>
+          </button>
+          <button class="btn-action-round play-btn" id="player-btn-play" style="width: 32px; height: 32px;">
+            <svg id="player-play-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            <svg id="player-pause-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="display: none;"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+          </button>
+          <button class="btn-icon-subtle" id="player-btn-next" title="Forward 10s">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="5" x2="19" y2="19"></line></svg>
+          </button>
+        </div>
+
+        <div class="player-seek-container">
+          <span class="player-time" id="player-current-time">0:00</span>
+          <input type="range" class="player-seek-bar" id="player-seek" value="0" min="0" max="100" step="0.1">
+          <span class="player-time" id="player-total-time">0:00</span>
+        </div>
+      </div>
+
+      <div class="player-volume">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--text-muted);">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+        </svg>
+        <input type="range" class="volume-slider" id="player-volume" value="80" min="0" max="100">
+      </div>
+
+      <button class="btn-icon-subtle" id="player-btn-close" title="Close Player">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+
+      <!-- Hidden HTML5 Audio Element -->
+      <audio id="audio-element"></audio>
+    </div>
+
+    <!-- Real-time Live YouTube Stream Preview Modal -->
+    <div class="live-player-modal-backdrop" id="live-player-modal" style="display: none;">
+      <div class="live-player-dialog">
+        <div class="live-player-header">
+          <div class="live-indicator">
+            <span class="live-dot"></span>
+            <span>LIVE YOUTUBE STREAM PREVIEW</span>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn-icon-subtle" id="btn-live-player-popout" title="Open in YouTube">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                <polyline points="15 3 21 3 21 9"></polyline>
+                <line x1="10" y1="14" x2="21" y2="3"></line>
+              </svg>
+            </button>
+            <button class="btn-icon-subtle" id="btn-live-player-close" title="Close Preview">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="live-player-frame-wrap">
+          <iframe id="live-player-iframe" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+
+        <div class="live-player-footer">
+          <div class="live-track-info">
+            <h4 class="live-track-title" id="live-player-title">Title</h4>
+            <div class="live-track-artist" id="live-player-artist">Channel</div>
+          </div>
+          <div class="live-player-actions">
+            <button class="btn-download-primary" id="btn-live-download-now">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              <span>Download MP3</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Celebration Confetti Canvas -->
+    <canvas id="confetti-canvas" style="position: fixed; inset: 0; pointer-events: none; z-index: 9999; width: 100%; height: 100%;"></canvas>
+
+  </div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>
